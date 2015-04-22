@@ -26,23 +26,26 @@ ADD nginx.conf /etc/nginx/nginx.conf
 #Disabling nginx daeomonize impedindo que o nginx saia do primeiro plano e o container seja encerrado
 #RUN echo "daemon off;" >> /etc/nginx/nginx.conf 
 
-# Making Directory to server-blocks
+# Making directory for server-blocks
 RUN mkdir /etc/nginx/site-enabled
 
-# Adding Confg locahost
+# Adding Config localhost
 ADD localhost /etc/nginx/site-enabled/localhost
 
 # Removing default configs
 RUN rm -rf /etc/nginx/conf.d/default.conf
 RUN rm -rf /etc/nginx/conf.d/example_ssl.conf
-RUN rm -rf /etc/php-fpm.d/mv www.conf 
+RUN rm -rf /etc/php-fpm.d/www.conf 
 
 #Configuring php for php-fpm
 RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php.ini
 
 # Starting sevices 
-RUN service php-fpm start
-RUN service nginx start
+#RUN service php-fpm start
+#RUN service nginx start
+
+# Adding the default file for testing php under nginx
+ADD index.php /var/www/html/index.php
 
 # Adding script for start services
 ADD start.sh /start.sh
@@ -54,4 +57,4 @@ RUN chmod +x /start.sh
 EXPOSE 80
 
 # Executing nginx and php-fpm
-CMD ["\start.sh"]
+CMD ["/start.sh"]
