@@ -27,15 +27,15 @@ ADD nginx.conf /etc/nginx/nginx.conf
 #RUN echo "daemon off;" >> /etc/nginx/nginx.conf 
 
 # Making directory for server-blocks
-RUN mkdir /etc/nginx/site-enabled
+RUN mkdir /etc/nginx/sites-enabled
 
 # Adding Config localhost
-ADD localhost /etc/nginx/site-enabled/localhost
+ADD localhost /etc/nginx/sites-enabled/localhost
 
 # Removing default configs
 RUN rm -rf /etc/nginx/conf.d/default.conf
 RUN rm -rf /etc/nginx/conf.d/example_ssl.conf
-RUN rm -rf /etc/php-fpm.d/www.conf 
+RUN rm -rf /etc/php-fpm.d/www.conf
 
 #Configuring php for php-fpm
 RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php.ini
