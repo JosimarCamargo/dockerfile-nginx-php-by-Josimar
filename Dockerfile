@@ -18,13 +18,13 @@ RUN rpm -Uvh http://fedora.uib.no/epel/6/x86_64/epel-release-6-8.noarch.rpm
 RUN yum -y install nginx php-fpm php-soap php-xml php php-mysql php-xmlrpc php-gd php-mbstring 
 
 # Adding config file to php-fpm
-ADD www.conf /etc/php-fpm.d/php-fpm.conf
+ADD php-fpm.conf /etc/php-fpm.d/php-fpm.conf
 
 # Adding the configuration file of the nginx
 ADD nginx.conf /etc/nginx/nginx.conf
 
-#Disabling nginx daeomonize impedido que o nginx saia do primeiro plano e o container seja encerrado
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf 
+#Disabling nginx daeomonize impedindo que o nginx saia do primeiro plano e o container seja encerrado
+#RUN echo "daemon off;" >> /etc/nginx/nginx.conf 
 
 # Making Directory to server-blocks
 RUN mkdir /etc/nginx/site-enabled
@@ -35,11 +35,20 @@ ADD localhost /etc/nginx/site-enabled/localhost
 # Removing default configs
 RUN rm -rf /etc/nginx/conf.d/default.conf
 RUN rm -rf /etc/nginx/conf.d/example_ssl.conf
-#RUN rm -rf /etc/php-fpm.d/mv www.conf 
+RUN rm -rf /etc/php-fpm.d/mv www.conf 
+
+#Configuring php for php-fpm
+RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php.ini
 
 # Starting sevices 
 RUN service php-fpm start
 RUN service nginx start
+
+# Adding script for start services
+ADD start.sh /start.sh
+
+# Adding permission to execute
+RUN chmod +x /start.sh
 
 # Set the port to 80 
 EXPOSE 80
