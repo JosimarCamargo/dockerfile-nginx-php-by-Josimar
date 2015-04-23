@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Welcome to Nginx Serve</title>
-	<h1>TESTE</h1>
+	<h1>TESTE 3</h1>
 </head>
 <body>
 	<center>

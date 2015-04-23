@@ -36,6 +36,8 @@ ADD localhost /etc/nginx/sites-enabled/localhost
 RUN rm -rf /etc/nginx/conf.d/default.conf
 RUN rm -rf /etc/nginx/conf.d/example_ssl.conf
 RUN rm -rf /etc/php-fpm.d/www.conf
+RUN rm -rf /usr/share/nginx/html
+
 
 #Configuring php for php-fpm
 RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php.ini
@@ -45,7 +47,7 @@ RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php.ini
 #RUN service nginx start
 
 # Adding the default file for testing php under nginx
-ADD index.php /var/www/html/index.php
+ADD html/index.php /var/www/html/index.php
 
 # Adding script for start services
 ADD start.sh /start.sh
@@ -56,5 +58,5 @@ RUN chmod +x /start.sh
 # Set the port to 80 
 EXPOSE 80
 
-# Executing nginx and php-fpm
+# Executing nginx and php-fpm, com este comando no Dockerfile vc não precisar add o comando na hora do docker run
 CMD ["/start.sh"]
