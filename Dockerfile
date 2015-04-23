@@ -14,8 +14,14 @@ ADD nginx.repo /etc/yum.repos.d/nginx.repo
 # Adding repo epel
 RUN rpm -Uvh http://fedora.uib.no/epel/6/x86_64/epel-release-6-8.noarch.rpm
 
+# Updating System
+RUN yum -y update
+
 # Installing nginx and PHP and popular extensions
 RUN yum -y install nginx php-fpm php-soap php-xml php php-mysql php-xmlrpc php-gd php-mbstring 
+
+# Clean cache from yum
+RUN yum clean all
 
 # Adding config file to php-fpm
 ADD php-fpm.conf /etc/php-fpm.d/php-fpm.conf
