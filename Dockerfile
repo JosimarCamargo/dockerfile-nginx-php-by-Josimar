@@ -29,9 +29,6 @@ ADD php-fpm.conf /etc/php-fpm.d/php-fpm.conf
 # Adding the configuration file of the nginx
 ADD nginx.conf /etc/nginx/nginx.conf
 
-#Disabling nginx daeomonize impedindo que o nginx saia do primeiro plano e o container seja encerrado
-#RUN echo "daemon off;" >> /etc/nginx/nginx.conf 
-
 # Making directory for server-blocks
 RUN mkdir /etc/nginx/sites-enabled
 
@@ -44,13 +41,8 @@ RUN rm -rf /etc/nginx/conf.d/example_ssl.conf
 RUN rm -rf /etc/php-fpm.d/www.conf
 RUN rm -rf /usr/share/nginx/html
 
-
 #Configuring php for php-fpm
 RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php.ini
-
-# Starting sevices 
-#RUN service php-fpm start
-#RUN service nginx start
 
 # Adding the default file for testing php under nginx
 ADD html/index.php /var/www/html/index.php
